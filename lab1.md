@@ -278,6 +278,7 @@ af549dccd5cf        ubuntu              "top"                    8 minutes ago  
 2. Next,  run `docker container stop [container id]` for each container in the list. You can also use the names of the containers that you specified before.
 ```sh
 $ docker container stop d67 ead af5
+
 d67
 ead
 af5
