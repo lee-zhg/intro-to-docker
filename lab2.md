@@ -387,41 +387,44 @@ c86415c03c37        8 days ago          /bin/sh -c #(nop)  CMD ["python3"]      
 
 Each line represents a layer of the image. You'll notice that the top lines match to your Dockerfile that you created, and the lines below are pulled from the parent python image. Don't worry about the "\<missing\>" tags. These are still normal layers; they have just not been given an ID by the docker system.
 
+
 # Step 7: Clean up
 
-Completing this lab results in a bunch of running containers on your host. Let's clean these up.
+Up to this point, steps in the labs results in a bunch of running containers on your host. Let's clean these up.
 
-1. Run `docker container stop [container id]` for each container that is running
+1. Retrieve `container ID` of running containers
 
-First get a list of the containers running using `docker container ls`.
-```sh
-$ docker container ls
-CONTAINER ID        IMAGE                COMMAND             CREATED             STATUS              PORTS                    NAMES
-0b2ba61df37f        python-hello-world   "python app.py"     7 minutes ago       Up 7 minutes        0.0.0.0:5001->5000/tcp   practical_kirch
-```
-Then run `docker container stop [container id]` for each container in the list.
-```sh
-$ docker container stop 0b2
-0b2
-```
+    ```sh
+    $ docker container ls
+    CONTAINER ID        IMAGE                COMMAND             CREATED             STATUS              PORTS                    NAMES
+    0b2ba61df37f        python-hello-world   "python app.py"     7 minutes ago       Up 7 minutes        0.0.0.0:5001->5000/tcp   practical_kirch
+    ```
 
-2. Remove the stopped containers
+2. Stop running containers
+
+    ```sh
+    $ docker container stop <container ID>
+    <container ID>
+    ```
+
+3. Remove the stopped containers
 
 `docker system prune` is a really handy command to clean up your system. It will remove any stopped containers, unused volumes and networks, and dangling images.
-
-```sh
-$ docker system prune
-WARNING! This will remove:
+    
+    ```sh
+    $ docker system prune
+    WARNING! This will remove:
         - all stopped containers
         - all volumes not used by at least one container
         - all networks not used by at least one container
         - all dangling images
-Are you sure you want to continue? [y/N] y
-Deleted Containers:
-0b2ba61df37fb4038d9ae5d145740c63c2c211ae2729fc27dc01b82b5aaafa26
+    Are you sure you want to continue? [y/N] y
+    Deleted Containers:
+    0b2ba61df37fb4038d9ae5d145740c63c2c211ae2729fc27dc01b82b5aaafa26
 
-Total reclaimed space: 300.3kB
-```
+    Total reclaimed space: 300.3kB
+    ```
+
 
 # Summary
 
