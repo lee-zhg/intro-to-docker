@@ -42,8 +42,10 @@ This is a simple python app that uses flask to expose a http web server on port 
 ```sh
 $ python3 --version
 Python 3.6.1
+
 $ pip3 --version
 pip 9.0.1 from /usr/local/lib/python3.6/site-packages (python 3.6)
+
 $ pip3 install flask
 Requirement already satisfied: flask in /usr/local/lib/python3.6/site-packages
 Requirement already satisfied: Werkzeug>=0.7 in /usr/local/lib/python3.6/site-packages (from flask)
@@ -58,6 +60,7 @@ Requirement already satisfied: Jinja2>=2.4 in /usr/local/lib/python3.6/site-pack
 Requirement already satisfied: click>=2.0 in /usr/local/lib/python3.6/site-packages (from flask)
 Requirement already satisfied: Werkzeug>=0.7 in /usr/local/lib/python3.6/site-packages (from flask)
 Requirement already satisfied: MarkupSafe>=0.23 in /usr/local/lib/python3.6/site-packages (from Jinja2>=2.4->flask)
+
 $ python3 app.py 
  * Running on http://0.0.0.0:5000/ (Press CTRL+C to quit)
 ```
@@ -109,6 +112,7 @@ Pass in `-t` to name your image `python-hello-world`.
 
 ```sh
 $ docker image build -t python-hello-world .
+
 Sending build context to Docker daemon  3.072kB
 Step 1/4 : FROM python:3.6.1-alpine
 3.6.1-alpine: Pulling from library/python
@@ -161,6 +165,7 @@ Verify that your image shows up in your image list via `docker image ls`.
 
 ```sh
 $ docker image ls
+
 REPOSITORY           TAG                 IMAGE ID            CREATED             SIZE
 python-hello-world   latest              f1b2781b3111        26 seconds ago      99.3MB
 python               3.6.1-alpine        c86415c03c37        8 days ago          88.7MB
@@ -175,6 +180,7 @@ Now that you have built the image, you can run it to see that it works.
 1. Run the Docker image
 ```sh
 $ docker run -p 5001:5000 -d python-hello-world
+
 0b2ba61df37fb4038d9ae5d145740c63c2c211ae2729fc27dc01b82b5aaafa26
 ```
 
@@ -194,6 +200,7 @@ If you want to see logs from your application you can use the `docker container 
 
 ```sh
 $ docker container logs [container id] 
+
  * Running on http://0.0.0.0:5000/ (Press CTRL+C to quit)
 172.17.0.1 - - [28/Jun/2017 19:35:33] "GET / HTTP/1.1" 200 -
 ```
@@ -215,6 +222,7 @@ You can log into the docker registry account by typing `docker login` on your te
 
 ``` 
 $ docker login
+
 Login with your Docker ID to push and pull images from Docker Hub. If you don't have a Docker ID, head over to https://hub.docker.com to create one.
 Username: 
 ```
@@ -233,6 +241,7 @@ Once we have a properly tagged image, we can use the `docker push` command to pu
 
 ```sh
 $ docker push [dockerhub username]/python-hello-world
+
 The push refers to a repository [docker.io/jzaccone/python-hello-world]
 2bce026769ac: Pushed 
 64d445ecbe93: Pushed 
@@ -281,6 +290,7 @@ First rebuild, this time use your Docker Hub username in the build command.:
 
 ```sh
 $  docker image build -t [dockerhub username]/python-hello-world .
+
 Sending build context to Docker daemon  3.072kB
 Step 1/4 : FROM python:3.6.1-alpine
  ---> c86415c03c37
@@ -301,6 +311,7 @@ Notice the "Using cache" for steps 1-3. These layers of the Docker Image have al
 
 ```sh
 $ docker push [dockerhub username]/python-hello-world
+
 The push refers to a repository [docker.io/jzaccone/python-hello-world]
 94525867566e: Pushed 
 64d445ecbe93: Layer already exists 
@@ -352,6 +363,7 @@ You may notice that there are duplicate lines in this Dockerfile and the Dockerf
 Image layering enables the docker caching mechanism for builds and pushes. For example, the output for your last `docker push` shows that some of the layers of your image already exists on the Docker Hub.
 ```sh
 $ docker push [dockerhub username]/python-hello-world
+
 The push refers to a repository [docker.io/jzaccone/python-hello-world]
 94525867566e: Pushed 
 64d445ecbe93: Layer already exists 
@@ -367,6 +379,7 @@ To look more closely at layers, you can use the `docker image history` command o
 
 ```sh
 $ docker image history python-hello-world
+
 IMAGE               CREATED             CREATED BY                                      SIZE                COMMENT
 f1b2781b3111        5 minutes ago       /bin/sh -c #(nop) COPY file:0114358808a1bb...   159B                
 0ab91286958b        5 minutes ago       /bin/sh -c #(nop)  CMD ["python" "app.py"]      0B                  
@@ -396,6 +409,7 @@ Up to this point, steps in the labs results in a bunch of running containers on 
 
     ```sh
     $ docker container ls
+    
     CONTAINER ID        IMAGE                COMMAND             CREATED             STATUS              PORTS                    NAMES
     0b2ba61df37f        python-hello-world   "python app.py"     7 minutes ago       Up 7 minutes        0.0.0.0:5001->5000/tcp   practical_kirch
     ```
@@ -404,15 +418,15 @@ Up to this point, steps in the labs results in a bunch of running containers on 
 
     ```sh
     $ docker container stop <container ID>
+    
     <container ID>
     ```
 
 3. Remove the stopped containers
 
-`docker system prune` is a really handy command to clean up your system. It will remove any stopped containers, unused volumes and networks, and dangling images.
-    
     ```sh
     $ docker system prune
+    
     WARNING! This will remove:
         - all stopped containers
         - all volumes not used by at least one container
@@ -424,6 +438,8 @@ Up to this point, steps in the labs results in a bunch of running containers on 
 
     Total reclaimed space: 300.3kB
     ```
+
+    `docker system prune` is a really handy command to clean up your system. It will remove any stopped containers, unused volumes and networks, and dangling images.
 
 
 # Summary
