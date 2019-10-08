@@ -43,6 +43,7 @@ The above command runs a container with the ubuntu image using the `top` command
 
 ```sh
 $ docker container run -it ubuntu top
+
 Unable to find image 'ubuntu:latest' locally
 latest: Pulling from library/ubuntu
 aafe6b5e13de: Pull complete 
@@ -99,6 +100,7 @@ It returns `CONTAINER ID` and other information
 
 ```sh
 $ docker container ls
+
 CONTAINER ID        IMAGE                      COMMAND                  CREATED             STATUS                         PORTS                       NAMES
 b3ad2a23fab3        ubuntu                     "top"                    29 minutes ago      Up 29 minutes                                              goofy_nobel
 ```
@@ -106,7 +108,8 @@ b3ad2a23fab3        ubuntu                     "top"                    29 minut
 c) Enter the conatiner with command
 
 ```sh
-$ docker container exec -it b3ad2a23fab3 bash 
+$ docker container exec -it b3ad2a23fab3 bash
+
 root@b3ad2a23fab3:/# 
 ```
 
@@ -124,6 +127,7 @@ From the second terminal, run `ps -ef` to inspect the running processes.
 
 ```sh
 root@b3ad2a23fab3:/# ps -ef
+
 UID        PID  PPID  C STIME TTY          TIME CMD
 root         1     0  0 20:34 ?        00:00:00 top
 root        17     0  0 21:06 ?        00:00:00 bash
@@ -137,6 +141,7 @@ For comparison, exit the container in the second terminal window, and run `ps -e
 ```sh
 root@b3ad2a23fab3:/# exit
 exit
+
 $ ps -ef
 # Lots of processes!
 ```
@@ -174,6 +179,7 @@ Let's run a container using the [official Nginx image](https://store.docker.com/
 
 ```sh
 $ docker container run --detach --publish 8080:80 --name nginx nginx
+
 Unable to find image 'nginx:latest' locally
 latest: Pulling from library/nginx
 36a46ebd5019: Pull complete 
@@ -203,6 +209,7 @@ Nginx is a lightweight web server. You can access it on port 8080 on your localh
 Now, run a mongoDB server. We will use the [official mongoDB image](https://store.docker.com/images/mongo) from the Docker Store. Instead of using the `latest` tag (which is the default if no tag is specified), we will use a specific version of the mongo image: 3.4.
 ```sh
 $ docker container run --detach --publish 8081:27017 --name mongo mongo:3.4
+
 Unable to find image 'mongo:3.4' locally
 3.4: Pulling from library/mongo
 d13d02fa248d: Already exists 
@@ -231,6 +238,7 @@ Again, since this is the first time we are running a mongo container, we will pu
 
 ```sh
 $ docker container ls
+
 CONTAINER ID        IMAGE               COMMAND                  CREATED                  STATUS              PORTS                     NAMES
 d6777df89fea        nginx               "nginx -g 'daemon ..."   Less than a second ago   Up 2 seconds        0.0.0.0:8080->80/tcp      nginx
 ead80a0db505        mongo               "docker-entrypoint..."   17 seconds ago           Up 19 seconds       0.0.0.0:8081->27017/tcp   mongo
@@ -261,6 +269,7 @@ Completing this lab results in a bunch of running containers on your host. Let's
 
 ```sh
 $ docker container ls
+
 CONTAINER ID        IMAGE               COMMAND                  CREATED             STATUS              PORTS                     NAMES
 d6777df89fea        nginx               "nginx -g 'daemon ..."   3 minutes ago       Up 3 minutes        0.0.0.0:8080->80/tcp      nginx
 ead80a0db505        mongo               "docker-entrypoint..."   3 minutes ago       Up 3 minutes        0.0.0.0:8081->27017/tcp   mongo
@@ -283,6 +292,7 @@ af5
 
 ```sh
 $ docker system prune
+
 WARNING! This will remove:
         - all stopped containers
         - all volumes not used by at least one container
