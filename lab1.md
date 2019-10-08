@@ -24,7 +24,7 @@ We will be using a few Docker commands in this lab. For full documentation on av
 
 ## Prerequisites
 
-Completed Lab 0: You must have docker installed, or be using http://play-with-docker.com.
+If you are not running the labs during an instructor-led workshop, completed Lab 0. You must have docker installed, or be using http://play-with-docker.com.
 
 
 # Step 1: Run your first container
@@ -33,9 +33,13 @@ We are going to use the Docker CLI to run our first container.
 
 1. Open a terminal on your local computer
 
-2. Run `docker container run -t ubuntu top`
+2. Run command 
 
-Use the `docker container run` command to run a container with the ubuntu image using the `top` command. The `-t` flags allocate a pseudo-TTY which we need for the `top` to work correctly.
+    ```
+    docker container run -t ubuntu top
+    ```
+
+The above command runs a container with the ubuntu image using the `top` command. The `-t` flag allocates a pseudo-TTY which we need for the `top` to work correctly.
 
 ```sh
 $ docker container run -it ubuntu top
@@ -74,7 +78,9 @@ Even though we are using the `ubuntu` image, it is important to note that our co
 
 The `docker container exec` command is a way to "enter" a running container's namespaces with a new process.
 
-Open a new terminal. To open a new terminal connected to node1 using play-with-docker.com, click "Add New Instance" on the lefthand side, then ssh from node2 into node1 using the IP that is listed by 'node1  '. For example:
+a) Open a new terminal. 
+
+If you are using play-with-docker.com, click "Add New Instance" on the lefthand side to open a new terminal connected to node1, then ssh from node2 into node1 using the IP that is listed by 'node1  '. For example:
 
 ```sh
 [node2] (local) root@192.168.0.17 ~
@@ -83,7 +89,13 @@ $ ssh 192.168.0.18
 $ 
 ```
 
-In the new terminal, use the `docker container ls` command to get the ID of the running container you just created.
+b) In the new terminal, use the command below to get the ID of the running container you just created.
+
+```
+docker container ls
+```
+
+It returns `CONTAINER ID` and other information
 
 ```sh
 $ docker container ls
@@ -91,22 +103,25 @@ CONTAINER ID        IMAGE                      COMMAND                  CREATED 
 b3ad2a23fab3        ubuntu                     "top"                    29 minutes ago      Up 29 minutes                                              goofy_nobel
 ```
 
-
-
-Then use that id to run `bash` inside that container using the `docker container exec` command. Since we are using bash and want to interact with this container from our terminal, use `-it` flags to run using interactive mode while allocating a psuedo-terminal.
+c) Enter the conatiner with command
 
 ```sh
 $ docker container exec -it b3ad2a23fab3 bash 
 root@b3ad2a23fab3:/# 
 ```
 
+The command uses the container id to run `bash` inside that container. Since we are using `bash` and want to interact with this container from our terminal, use `-it` flags to run using interactive mode while allocating a psuedo-terminal.
+
 And Voila! We just used the `docker container exec` command to "enter" our container's namespaces with our bash process. Using `docker container exec` with `bash` is a common pattern to inspect a docker container.
 
 Notice the change in the prefix of your terminal. e.g. `root@b3ad2a23fab3:/`. This is an indication that we are running bash "inside" of our container. 
 
-**Note**: This is not the same as ssh'ing into a separate host or a VM. We don't need an ssh server to connect with a bash process. Remember that containers use kernel-level features to achieve isolation and that containers run on top of the kernel. Our container is just a group of processes running in isolation on the same host, and we can use `docker container exec` to enter that isolation with the `bash` process. After running `docker container exec`, the group of processes running in isolation (i.e. our container) include `top` and `bash`.
+**Note**: This is not the same as ssh'ing into a separate host or a VM. We don't need an ssh server to connect with a bash process. Remember that containers use kernel-level features to achieve isolation and that containers run on top of the kernel. Our container is just a group of processes running in isolation on the same host, and we can use `docker container exec` to enter that isolation with the `bash` process. 
 
-From the same termina, run `ps -ef` to inspect the running processes.
+After running `docker container exec`, the group of processes running in isolation (i.e. our container) include `top` and `bash`. This can be observed in the first terminal window.
+
+From the second terminal, run `ps -ef` to inspect the running processes.
+
 ```sh
 root@b3ad2a23fab3:/# ps -ef
 UID        PID  PPID  C STIME TTY          TIME CMD
@@ -114,9 +129,10 @@ root         1     0  0 20:34 ?        00:00:00 top
 root        17     0  0 21:06 ?        00:00:00 bash
 root        27    17  0 21:14 ?        00:00:00 ps -ef
 ```
+
 You should see only the `top` process, `bash` process and our `ps` process.
 
-For comparison, exit the container, and run `ps -ef` or `top` on the host. These commands will work on linux or mac. For windows, you can inspect the running processes using `tasklist`.
+For comparison, exit the container in the second terminal window, and run `ps -ef` or `top` command on the host. These commands will work on linux or mac. For windows, you can inspect the running processes using `tasklist`.
 
 ```sh
 root@b3ad2a23fab3:/# exit
@@ -139,7 +155,8 @@ These namespaces together provide the isolation for containers that allow them t
 
 In additional to running linux containers on Windows using a linux subsystem, native Windows containers are now possible due the creation of container primitives on the Windows OS. Native Windows containers can be run on Windows 10 or Windows Server 2016 or newer. 
 
-4. Clean up the container running the `top` processes by typing: `<ctrl>-c.`
+4. In the first terminal, stop and clean up the running container by typing: `<ctrl>-c.`
+
 
 # Step 2: Run Multiple Containers
 
