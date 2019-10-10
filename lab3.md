@@ -28,7 +28,7 @@ You must have docker installed, or be using https://www.katacoda.com/courses/doc
 1. Run command
 
     ```bash
-    cd  ~
+    cd /data
     git clone https://github.com/lee-zhg/intro-to-docker.git
     ```
 1. Navigate to folder `intro-to-docker`
