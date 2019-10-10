@@ -105,12 +105,26 @@ One file and one folder in the root directory of the repository are specifically
     COPY HelloWorld /HelloWorld
     ```
 
-3. Build the docker image. 
+3. Set unique Docker image name
+
+    * when you are running the lab in a wetty web terminal, you have to set a container image name based on your assigned wetty terminal username. For example, if your username is `user03`, you should use the container image name `cplus-hello-world-03`. 
+
+        ```
+        export IMAGENAME=[your unique name]
+        ```
+
+    * when you are running the lab on your local machine or via http://play-with-docker.com,
+
+      ```
+      export IMAGENAME=cplus-hello-world
+      ```
+
+4. Build the docker image. 
 
     Pass in parameter `-t` to name your image `cplus-hello-world`.
 
     ```sh
-    $ docker image build -t cplus-hello-world .
+    $ docker image build -t $IMAGENAME .
 
     Sending build context to Docker daemon  23.55kB
     Step 1/3 : FROM ubuntu:latest
@@ -125,9 +139,9 @@ One file and one folder in the root directory of the repository are specifically
     Successfully tagged cplus-hello-world:latest
     ```
 
-    > Note: it may take a while when you build this Docker image. It take time to install and prepare the `g++` environment.
+    > Note: it may take a while when you build this Docker image for the first time. It take time to install and prepare the `g++` environment.
 
-4. Verify that your image shows up in your image list via `docker image ls`.
+5. Verify that your image shows up in your image list via `docker image ls`.
 
     ```sh
     $ docker image ls
@@ -147,12 +161,12 @@ Now that you have built the image, you can run it to see that it works.
 1. Run the Docker image
 
     ```sh
-    $ docker run cplus-hello-world
+    $ docker run $IMAGENAME
 
     Hello world!
     ``` 
 
-    This is a simple C++ application. Its only action is to print `Hello World!` in the standard out.
+    This is a simple C++ application. Its only action is to print `Hello World!` to the standard out.
 
 
 # Step 4: Push to a central registry
@@ -174,20 +188,26 @@ Now that you have built the image, you can run it to see that it works.
     Username: 
     ```
 
-3. Tag your image with your username
+3. Set your Docker Hub ID
+
+    ```
+    export DOCKERHUBID=<your Docker Hub ID>
+    ```
+
+4. Tag your image with your username
 
     The Docker Hub naming convention is to tag your image with [dockerhub username]/[image name]. To do this, we are going to tag our previously created image `python-hello-world` to fit that format.
 
     ```sh
-    $ docker tag python-hello-world [dockerhub username]/ cplus-hello-world
+    $ docker tag $IMAGENAME $DOCKERHUBID/$IMAGENAME
     ```
 
-4. Push your image to the registry
+5. Push your image to the registry
 
     Once we have a properly tagged image, we can use the `docker push` command to push our image to the Docker Hub registry.
 
     ```sh
-    $ docker push [dockerhub username]/cplus-hello-world
+    $ docker push $DOCKERHUBID/$IMAGENAME
 
     The push refers to repository [docker.io/leezhang/cplus-hello-world]
     c5ec7971f99d: Mounted from leezhang/python-hello-world 
@@ -200,13 +220,14 @@ Now that you have built the image, you can run it to see that it works.
     latest: digest: sha256:48b9a1f561c716ad62ad4328a68cf2bad518918d51abf0452535f14d48167d20 size: 1786
     ```
 
-5. Check out your image on docker hub in your browser
+6. Check out your image on docker hub in your browser
 
-Navigate to https://hub.docker.com and go to your profile to see your newly uploaded image.
+    Navigate to https://hub.docker.com and go to your profile to see your newly uploaded image.
 
-Now that your image is on Docker Hub, other developers and operations can use the `docker pull` command to deploy your image to other environments.  
+    Now that your image is on Docker Hub, other developers and operations can use the `docker pull` command to deploy your image to other environments.  
 
-**Note:** Docker images contain all the dependencies that it needs to run an application within the image. This is useful because we no longer have deal with environment drift (version differences) when we rely on dependencies that are install on every environment we deploy to. We also don't have to go through additional steps to provision these environments. Just one step: install docker, and you are good to go.
+    **Note:** Docker images contain all the dependencies that it needs to run an application within the image. This is useful because we no longer have deal with environment drift (version differences) when we rely on dependencies that are install on every environment we deploy to. We also don't have to go through additional steps to provision these environments. Just one step: install docker, and you are good to go.
+
 
 # Step 5: Deploying a Change
 The "hello world!" application is overrated, let's update the app so that it says "Hello Beautiful World!" instead.
@@ -223,7 +244,7 @@ The "hello world!" application is overrated, let's update the app so that it say
 
 
     ```sh
-    $  docker image build -t [dockerhub username]/cplus-hello-world .
+    $  docker image build -t $DOCKERHUBID/$IMAGENAME .
 
     Sending build context to Docker daemon  3.072kB
     Step 1/4 : FROM python:3.6.1-alpine
@@ -235,7 +256,7 @@ The "hello world!" application is overrated, let's update the app so that it say
 3. Push your image
 
     ```sh
-    $ docker push [dockerhub username]/cplus-hello-world
+    $ docker push $DOCKERHUBID/$IMAGENAME
 
     The push refers to a repository [docker.io/jzaccone/python-hello-world]
     ```
