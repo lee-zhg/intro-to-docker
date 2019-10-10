@@ -124,7 +124,7 @@ We are going to use the Docker CLI to run our first container.
 
     After running `docker container exec`, the group of processes running in isolation (i.e. our container) include `top` and `bash`. This can be observed in the first terminal window.
 
-    From the second terminal, run `ps -ef` to inspect the running processes.
+4. From the second terminal, run `ps -ef` command to inspect the running processes.
 
     ```sh
     root@b3ad2a23fab3:/# ps -ef
@@ -137,7 +137,7 @@ We are going to use the Docker CLI to run our first container.
 
     You should see only the `top` process, `bash` process and our `ps` process.
 
-    For comparison, exit the container in the second terminal window, and run `ps -ef` or `top` command on the host. These commands will work on linux or mac. For windows, you can inspect the running processes using `tasklist`.
+5. For comparison, exit the container in the second terminal window, and run `ps -ef` or `top` command on the host. These commands will work on linux or mac. For windows, you can inspect the running processes using `tasklist`.
 
     ```sh
     root@b3ad2a23fab3:/# exit
@@ -162,7 +162,7 @@ We are going to use the Docker CLI to run our first container.
 
     In additional to running linux containers on Windows using a linux subsystem, native Windows containers are now possible due the creation of container primitives on the Windows OS. Native Windows containers can be run on Windows 10 or Windows Server 2016 or newer. 
 
-    4. In the first terminal, stop and clean up the running container by typing: `<ctrl>-c.`
+6. In the first terminal, stop and clean up the running container by typing: `<ctrl>-c.`
 
 
 # Step 2: Run Multiple Containers
