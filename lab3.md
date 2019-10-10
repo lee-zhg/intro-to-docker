@@ -28,6 +28,7 @@ You must have docker installed, or be using https://www.katacoda.com/courses/doc
 1. Run command
 
     ```bash
+    cd  ~
     git clone https://github.com/lee-zhg/intro-to-docker.git
     ```
 1. Navigate to folder `intro-to-docker`
@@ -39,9 +40,9 @@ You must have docker installed, or be using https://www.katacoda.com/courses/doc
 
 # Step 2: Create and build the Docker Image
 
-One file and one folder in the root directory of the repository are prepared and used for this lab.
+One file and one folder in the root directory of the repository are specifically prepared and used for this lab.
   * Dockerfile
-  * HelloWorld
+  * /HelloWorld
 
 1. Sample C++ application `HelloWorld/helloworld.cpp`
 
@@ -60,12 +61,6 @@ One file and one folder in the root directory of the repository are prepared and
 
 2. Sample `Dockerfile` file
 
-    ```sh
-    echo 'FROM ubuntu:latest
-    CMD ["./HelloWorld"]
-    COPY HelloWorld /HelloWorld' > Dockerfile
-    ```
-
     Sample `Dockerfile` file in the repo will be used to build the Docker image.
 
     ```
@@ -78,31 +73,37 @@ One file and one folder in the root directory of the repository are prepared and
     CMD ["./HelloWorld"]
     ```
 
+    A Dockerfile lists the instructions needed to build a docker image. Let's go through the above file line by line.
 
+    **FROM ubuntu:latest**
+    This is the starting point for your Dockerfile. Every Dockerfile must start with a `FROM` line that is the starting image to build your layers on top of. In this case, we are selecting the `ubuntu:latest` base layer. For simplicity, the `latest` version is used for its latest distribution. 
 
-A Dockerfile lists the instructions needed to build a docker image. Let's go through the above file line by line.
+    For security reasons, it is very important to understand the layers that you build your docker image on top of. For that reason, it is highly recommended to only use "official" images found in the [docker hub](https://hub.docker.com/), or non-community images found in the docker-store. These images are [vetted](https://docs.docker.com/docker-hub/official_repos/) to meet certain security requirements, and also have very good documentation for users to follow. 
 
-**FROM ubuntu:latest**
-This is the starting point for your Dockerfile. Every Dockerfile must start with a `FROM` line that is the starting image to build your layers on top of. In this case, we are selecting the `ubuntu:latest` base layer. For simplicity, the `latest` version is used for its latest distribution. 
+    **RUN apt-get update and RUN apt-get -y install g++**
+    This two commands install `g++` in the container to compile the sample C++ application.
 
-For security reasons, it is very important to understand the layers that you build your docker image on top of. For that reason, it is highly recommended to only use "official" images found in the [docker hub](https://hub.docker.com/), or non-community images found in the docker-store. These images are [vetted](https://docs.docker.com/docker-hub/official_repos/) to meet certain security requirements, and also have very good documentation for users to follow. 
+    **COPY HelloWorld /HelloWorld**
+    This copies the folder `HelloWorld` and C++ application in the local directory (where you will run `docker image build`) into a new layer of the image. 
 
-**RUN apt-get update and RUN apt-get -y install g++**
-This two commands install `g++` in the container to compile the sample C++ application.
+    **WORKDIR /HelloWorld/**
+    This entry defines the working directory.
 
-**COPY HelloWorld /HelloWorld**
-This copies the folder `HelloWorld` and C++ application in the local directory (where you will run `docker image build`) into a new layer of the image. 
+    **RUN g++ -o HelloWorld helloworld.cpp**
+    This entry compiles the sample C++ application.
 
-**WORKDIR /HelloWorld/**
-This entry defines the working directory.
+    **CMD ["./HelloWorld"]**
+    `CMD` is the command that is executed when you start a container. Here we are using `CMD` to run our C++ app executable. 
 
-**RUN g++ -o HelloWorld helloworld.cpp**
-This entry compiles the sample C++ application.
+    There can be only one `CMD` per Dockerfile. If you specify more thane one `CMD`, then the last `CMD` will take effect. The parent `ubuntu:latest` also specifies a `CMD`. 
 
-**CMD ["./HelloWorld"]**
-`CMD` is the command that is executed when you start a container. Here we are using `CMD` to run our C++ app executable. 
+    The compiling process is handled in the above `Dockerfile` for the simplicity during the exercise. The `Dockerfile` below can be an alternative. However, it requires the C++ source code to be complied on the exactly same platform as the Docker base image before the Docker image is built, because the C++ libraries are different on different platforms. 
 
-There can be only one `CMD` per Dockerfile. If you specify more thane one `CMD`, then the last `CMD` will take effect. The parent `ubuntu:latest` also specifies a `CMD`. 
+    ```sh
+    FROM ubuntu:latest
+    CMD ["./HelloWorld"]
+    COPY HelloWorld /HelloWorld
+    ```
 
 3. Build the docker image. 
 
