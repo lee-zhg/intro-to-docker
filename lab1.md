@@ -124,7 +124,7 @@ We are going to use the Docker CLI to run our first container.
 
     After running `docker container exec`, the group of processes running in isolation (i.e. our container) include `top` and `bash`. This can be observed in the first terminal window.
 
-4. From the second terminal, run `ps -ef` command to inspect the running processes.
+4. In the second terminal, run `ps -ef` command to inspect the running processes.
 
     ```sh
     root@b3ad2a23fab3:/# ps -ef
