@@ -18,6 +18,7 @@ We will be using a few Docker commands in this lab. For full documentation on av
 
 You must have docker installed, or be using https://www.katacoda.com/courses/docker/playground.
 
+
 # Step 1: Create a python app (without using Docker)
 
 1. Run the following command to create a file named `app.py` with a simple python program. (copy-paste the entire code block)
@@ -65,6 +66,7 @@ You must have docker installed, or be using https://www.katacoda.com/courses/doc
     * Running on http://0.0.0.0:5000/ (Press CTRL+C to quit)
     ```
 
+
 # Step 2: Create and build the Docker Image
 
 If you don't have python install locally, don't worry! Because you don't need it. One of the advantages of using Docker containers is that you can build python into your containers, without having python installed on your host. 
@@ -106,12 +108,27 @@ If you don't have python install locally, don't worry! Because you don't need it
 
     And there you have it: a very simple Dockerfile. A full list of commands you can put into a Dockerfile can be found [here](https://docs.docker.com/engine/reference/builder/). Now that we defined our Dockerfile, let's use it to build our custom docker image.
 
-2. Build the docker image. 
+2. Set unique Docker image name
+
+    * when you are running the lab in a wetty web terminal, you have to set a container image name based on your assigned wetty terminal username. For example, if your username is `user03`, you should use the container image name `python-hello-world-03`. 
+
+        ```
+        export IMAGENAME=[your unique name]
+        ```
+
+    * when you are running the lab on your local machine or via http://play-with-docker.com,
+
+      ```
+      export IMAGENAME=python-hello-world
+      ```
+
+
+3. Build the docker image. 
 
     Pass in `-t` to name your image `python-hello-world`.
 
     ```sh
-    $ docker image build -t python-hello-world .
+    $ docker image build -t $IMAGENAME .
 
     Sending build context to Docker daemon  3.072kB
     Step 1/4 : FROM python:3.6.1-alpine
@@ -173,29 +190,50 @@ If you don't have python install locally, don't worry! Because you don't need it
 
     Notice that your base image, python:3.6.1-alpine, is also in your list.
 
+
 # Step 3: Run the Docker image
 
 Now that you have built the image, you can run it to see that it works.
 
-1. Run the Docker image
+1. Set unique port# 
+
+    * when you are running the lab in a wetty web terminal, you have to set a unique port# based on your assigned wetty terminal username. For example, if your username is `user03`, you should use port# `5003`. 
+
+        ```
+        export PYTHONPORT=[your unique port#]
+        ```
+
+    * when you are running the lab on your local machine or via http://play-with-docker.com,
+
+      ```
+      export PYTHONPORT=5001
+      ```
+
+2. Run the Docker image
 
     ```sh
-    $ docker run -p 5001:5000 -d python-hello-world
+    $ docker run -p $PYTHONPORT:5000 -d $IMAGENAME
 
     0b2ba61df37fb4038d9ae5d145740c63c2c211ae2729fc27dc01b82b5aaafa26
     ```
 
     The `-p` flag maps a port running inside the container to your host. In this case, we are mapping the python app running on port 5000 inside the container, to port 5001 on your host. Note that if port 5001 is already in use by another application on your host, you may have to replace 5001 with another value, such as 5002.
 
-2. Navigate to http://localhost:5001 in a browser to see the results. 
+3. Verify your running Pyuthon application.
 
-    If you are using katacoda, click on the link in the left-hand pane that says: View port at https://....environments.katacoda.com" then type in 5001 and click "Display Port". 
-
-    In play-with-docker, click the link `5001` that should appear near the top of your session. If all else fails: `curl localhost:5001` works...
+    * when you run the lab in a `wetty terminal`, you may verify your running Pyuthon application at `http://<wetty terminal IP>:<your unique port#>`
+    * when you run the lab locally, you may verify the Nginx server at `http://localhost:5001`
+    * when you are using `play-with-docker`, look for the `5001` link near the top of the page.
 
     You should see "hello world!" on your browser.
 
-3. Check the log output of the container.
+4. Retrieve `Docker Container ID`
+
+    ```
+    docker container ls
+    ```
+
+5. Check the log output of the container.
 
     If you want to see logs from your application you can use the `docker container logs` command. By default, `docker container logs` prints out what is sent to standard out by your application. Use `docker container ls` to find the id for your running container.
 
@@ -226,22 +264,34 @@ Now that you have built the image, you can run it to see that it works.
 
     Login with your Docker ID to push and pull images from Docker Hub. If you don't have a Docker ID, head over to https://hub.docker.com to create one.
     Username: 
+    Password: 
+    WARNING! Your password will be stored unencrypted in /home/user29/.docker/config.json.
+    Configure a credential helper to remove this warning. See
+    https://docs.docker.com/engine/reference/commandline/login/#credentials-store
+
+    Login Succeeded
     ```
 
-3. Tag your image with your username
+3. Set your Docker Hub ID
+
+    ```
+    export DOCKERHUBID=<your Docker Hub ID>
+    ```
+
+4. Tag your image with your username
 
     The Docker Hub naming convention is to tag your image with [dockerhub username]/[image name]. To do this, we are going to tag our previously created image `python-hello-world` to fit that format.
 
     ```sh
-    $ docker tag python-hello-world [dockerhub username]/python-hello-world
+    $ docker tag $IMAGENAME $DOCKERHUBID/$IMAGENAME
     ```
 
-4. Push your image to the registry
+5. Push your image to the registry
 
     Once we have a properly tagged image, we can use the `docker push` command to push our image to the Docker Hub registry.
 
     ```sh
-    $ docker push [dockerhub username]/python-hello-world
+    $ docker push $DOCKERHUBID/$IMAGENAME
 
     The push refers to a repository [docker.io/jzaccone/python-hello-world]
     2bce026769ac: Pushed 
@@ -254,13 +304,14 @@ Now that you have built the image, you can run it to see that it works.
     latest: digest: sha256:508238f264616bf7bf962019d1a3826f8487ed6a48b80bf41fd3996c7175fd0f size: 1786
     ```
 
-4. Check out your image on docker hub in your browser
+6. Check out your image on docker hub in your browser
 
     Navigate to https://hub.docker.com and go to your profile to see your newly uploaded image.
 
     Now that your image is on Docker Hub, other developers and operations can use the `docker pull` command to deploy your image to other environments.  
 
     **Note:** Docker images contain all the dependencies that it needs to run an application within the image. This is useful because we no longer have deal with environment drift (version differences) when we rely on dependencies that are install on every environment we deploy to. We also don't have to go through additional steps to provision these environments. Just one step: install docker, and you are good to go.
+
 
 # Step 5: Deploying a Change
 
@@ -283,14 +334,14 @@ The "hello world!" application is overrated, let's update the app so that it say
         app.run(host="0.0.0.0")' > app.py
     ```
 
-2. Rebuild and push your image
+2. Rebuild your image
 
     Now that your app is updated, you need repeat the steps above to rebuild your app and push it to the Docker Hub registry.
 
     First rebuild, this time use your Docker Hub username in the build command.:
 
     ```sh
-    $  docker image build -t [dockerhub username]/python-hello-world .
+    $  docker image build -t $DOCKERHUBID/$IMAGENAME .
 
     Sending build context to Docker daemon  3.072kB
     Step 1/4 : FROM python:3.6.1-alpine
@@ -310,8 +361,10 @@ The "hello world!" application is overrated, let's update the app so that it say
 
     Notice the "Using cache" for steps 1-3. These layers of the Docker Image have already been built and `docker image build` will use these layers from the cache instead of rebuilding them.
 
+3. Push your image
+
     ```sh
-    $ docker push [dockerhub username]/python-hello-world
+    $ docker push $DOCKERHUBID/$IMAGENAME
 
     The push refers to a repository [docker.io/jzaccone/python-hello-world]
     94525867566e: Pushed 
@@ -327,6 +380,7 @@ The "hello world!" application is overrated, let's update the app so that it say
     There is a caching mechanism in place for pushing layers too. Docker Hub already has all but one of the layers from an earlier push, so it only pushes the one layer that has changed.
 
     When you change a layer, every layer built on top of that will have to be rebuilt. Each line in a Dockerfile builds a new layer that is built on the layer created from the lines before it. This is why the order of the lines in our Dockerfile is important. We optimized our Dockerfile so that the layer that is most likely to change (`COPY app.py /app.py`) is the last line of the Dockerfile. Generally for an application, your code changes at the most frequent rate. This optimization is particularly important for CI/CD processes, where you want your automation to run as fast as possible.
+
 
 # Step 6: Understanding Image Layers
 
@@ -404,6 +458,8 @@ Each line represents a layer of the image. You'll notice that the top lines matc
 
 
 # Step 7: Clean up
+
+>**Note**: Skip this section if you are running the lab in a `wetty terminal`.
 
 Up to this point, steps in the labs results in a bunch of running containers on your host. Let's clean these up.
 
