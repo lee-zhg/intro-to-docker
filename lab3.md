@@ -179,7 +179,7 @@ Now that you have built the image, you can run it to see that it works.
     The Docker Hub naming convention is to tag your image with [dockerhub username]/[image name]. To do this, we are going to tag our previously created image `python-hello-world` to fit that format.
 
     ```sh
-    $ docker tag <your dockerhub username>/cplus-hello-world
+    $ docker tag cplus-hello-world  <your dockerhub username>/cplus-hello-world
     ```
 
 4. Push your image to the registry
