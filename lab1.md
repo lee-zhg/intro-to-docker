@@ -218,7 +218,11 @@ We are going to use the Docker CLI to run our first container.
 
     Nginx is a lightweight web server. You can access it on port 8080 on your localhost.
 
-4. Access the nginx server on http://localhost:<your unique port#>. If you are using play-with-docker, look for the `8100` link near the top of the page.
+4. Verify the nginx server.
+
+    * when you run the lab in a `wetty terminal`, you may verify the Nginx server at `http://<wetty terminal IP>:<your unique port#>`
+    * when you run the lab locally, you may verify the Nginx server at `http://localhost:8100` 
+    * when you are using `play-with-docker`, look for the `8100` link near the top of the page.
 
     ![](images/lab1_step2_nginx.png)
 
@@ -265,7 +269,11 @@ We are going to use the Docker CLI to run our first container.
 
     Again, since this is the first time we are running a mongo container, we will pull down the mongo image from the Docker Store. We are using the `--publish` flag to expose the 27017 mongo port on our host. We have to use a port other than 8080 for the host mapping, since that port is already exposed on our host. Again refer to the [official docs](https://store.docker.com/images/mongo) on the Docker Store to get more details about using the mongo image.
 
-7. Access http://localhost:<your unique port#> to see some output from mongo. If you are using play-with-docker, look for the `8200` link near the top of the page.
+7. Verify the Mongo DB container.
+
+    * when you run the lab in a `wetty terminal`, you may verify the Nginx server at `http://<wetty terminal IP>:<your unique port#>`
+    * when you run the lab locally, you may verify the Nginx server at `http://localhost:8200`
+    * when you are using `play-with-docker`, look for the `8200` link near the top of the page.
 
     ![](images/lab1_step2_mongo.png)
 
@@ -295,6 +303,8 @@ We are going to use the Docker CLI to run our first container.
     While running images directly from the Docker Store can be useful at times, it is more useful to create custom images, and refer to official images as the starting point for these images. We will dive into building our own custom images in Lab 2.
 
 # Step 3: Clean Up
+
+>**Note**: Skip this section if you are running the lab in a `wetty terminal`.
 
 Completing this lab results in a bunch of running containers on your host. Let's clean these up.
 
