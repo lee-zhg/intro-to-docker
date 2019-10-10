@@ -8,6 +8,7 @@ This document is current as of the initial date of publication and may be change
 
 The information contained in these materials is provided for informational purposes only, and is provided AS IS without warranty of any kind, express or implied. IBM shall not be responsible for any damages arising out of the use of, or otherwise related to, these materials. Nothing contained in these materials is intended to, nor shall have the effect of, creating any warranties or representations from IBM or its suppliers or licensors, or altering the terms and conditions of the applicable license agreement governing the use of IBM software. References in these materials to IBM products, programs, or services do not imply that they will be available in all countries in which IBM operates. This information is based on current IBM product plans and strategy, which are subject to change by IBM without notice. Product release dates and/or capabilities referenced in these materials may change at any time at IBM&#39;s sole discretion based on market opportunities or other factors, and are not intended to be a commitment to future product or feature availability in any way.
 
+
 # Overview
 
 In this lab, you will run your first Docker container. 
@@ -175,28 +176,12 @@ We are going to use the Docker CLI to run our first container.
  
     In Step 2 of this lab, we will start a couple of containers using some verified images from the Docker Store: nginx web server, and mongo database.
 
-2. Set unique port# and container name used by Nginx server
-
-    * when you are running the lab in a wetty web terminal, you have to set a unique port# and container name based on your assigned wetty terminal username. For example, if your username is `user03`, you should use port# `8103`, and the container name as `nginx-03`. 
-
-        ```
-        export NGINXPORT=[your unique port#]
-        export NGINXNAME=[your unique name]
-        ```
-
-    * when you are running the lab on your local machine or via http://play-with-docker.com,
-
-      ```
-      export NGINXPORT=8100
-      export NGINXNAME=nginx
-      ```
-
-3. Run an Nginx server
+2. Run an Nginx server
 
     Let's run a container using the [official Nginx image](https://store.docker.com/images/nginx) from the Docker Store.
 
     ```sh
-    $ docker container run --detach --publish $NGINXPORT:80 --name $NGINXNAME nginx
+    $ docker container run --detach --publish 8100:80 --name nginx nginx
 
     Unable to find image 'nginx:latest' locally
     latest: Pulling from library/nginx
@@ -218,36 +203,20 @@ We are going to use the Docker CLI to run our first container.
 
     Nginx is a lightweight web server. You can access it on port 8080 on your localhost.
 
-4. Verify the nginx server.
+3. Verify the nginx server.
 
-    * when you run the lab in a `wetty terminal`, you may verify the Nginx server at `http://<wetty terminal IP>:<your unique port#>`
+    * when you run the lab in a `web terminal`, you may verify the Nginx server at `http://<web terminal IP>:8100`
     * when you run the lab locally, you may verify the Nginx server at `http://localhost:8100` 
     * when you are using `play-with-docker`, look for the `8100` link near the top of the page.
 
     ![](images/lab1_step2_nginx.png)
 
-5. Set unique port# and container name used by mongo DB server
-
-    * when you are running the lab in a wetty web terminal, you have to set a unique port# and container name based on your assigned wetty terminal username. For example, if your username is `user03`, you should use port# `8203`, and the container name as `mongo-03`. 
-
-        ```
-        export MONGOPORT=[your unique port#]
-        export MONGONAME=[your unique name]
-        ```
-
-    * when you are running the lab on your local machine or via http://play-with-docker.com,
-
-      ```
-      export MONGOPORT=8200
-      export MONGONAME=mongo
-      ```
-
-6.  Run a mongo DB server
+4.  Run a mongo DB server
 
     Now, run a mongoDB server. We will use the [official mongoDB image](https://store.docker.com/images/mongo) from the Docker Store. Instead of using the `latest` tag (which is the default if no tag is specified), we will use a specific version of the mongo image: 3.4.
 
     ```sh
-    $ docker container run --detach --publish $MONGOPORT:27017 --name $MONGONAME mongo:3.4
+    $ docker container run --detach --publish 8200:27017 --name mongo mongo:3.4
 
     Unable to find image 'mongo:3.4' locally
     3.4: Pulling from library/mongo
@@ -269,9 +238,9 @@ We are going to use the Docker CLI to run our first container.
 
     Again, since this is the first time we are running a mongo container, we will pull down the mongo image from the Docker Store. We are using the `--publish` flag to expose the 27017 mongo port on our host. We have to use a port other than 8080 for the host mapping, since that port is already exposed on our host. Again refer to the [official docs](https://store.docker.com/images/mongo) on the Docker Store to get more details about using the mongo image.
 
-7. Verify the Mongo DB container.
+5. Verify the Mongo DB container.
 
-    * when you run the lab in a `wetty terminal`, you may verify the Nginx server at `http://<wetty terminal IP>:<your unique port#>`
+    * when you run the lab in a `web terminal`, you may verify the Nginx server at `http://<web terminal IP>:8200`
     * when you run the lab locally, you may verify the Nginx server at `http://localhost:8200`
     * when you are using `play-with-docker`, look for the `8200` link near the top of the page.
 
@@ -302,12 +271,10 @@ We are going to use the Docker CLI to run our first container.
 
     While running images directly from the Docker Store can be useful at times, it is more useful to create custom images, and refer to official images as the starting point for these images. We will dive into building our own custom images in Lab 2.
 
+
 # Step 3: Clean Up
 
->**Note**: Skip this section if you are running the lab in a `wetty terminal`.
-
 Completing this lab results in a bunch of running containers on your host. Let's clean these up.
-
 
 1. First get a list of the containers running using `docker container ls`. 
 
@@ -353,6 +320,7 @@ Completing this lab results in a bunch of running containers on your host. Let's
 
     Total reclaimed space: 12B
     ```
+
 
 # Summary
 
