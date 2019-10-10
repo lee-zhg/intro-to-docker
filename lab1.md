@@ -175,12 +175,28 @@ We are going to use the Docker CLI to run our first container.
  
     In Step 2 of this lab, we will start a couple of containers using some verified images from the Docker Store: nginx web server, and mongo database.
 
-2. Run an Nginx server
+2. Set unique port# and container name used by Nginx server
+
+    * when you are running the lab in a wetty web terminal, you have to set a unique port# and container name based on your assigned wetty terminal username. For example, if your username is `user03`, you should use port# `8103`, and the container name as `nginx-03`. 
+
+        ```
+        export NGINXPORT=[your unique port#]
+        export NGINXNAME=[your unique name]
+        ```
+
+    * when you are running the lab on your local machine or via http://play-with-docker.com,
+
+      ```
+      export NGINXPORT=8100
+      export NGINXNAME=nginx
+      ```
+
+3. Run an Nginx server
 
     Let's run a container using the [official Nginx image](https://store.docker.com/images/nginx) from the Docker Store.
 
     ```sh
-    $ docker container run --detach --publish 8080:80 --name nginx nginx
+    $ docker container run --detach --publish $NGINXPORT:80 --name $NGINXNAME nginx
 
     Unable to find image 'nginx:latest' locally
     latest: Pulling from library/nginx
@@ -202,16 +218,32 @@ We are going to use the Docker CLI to run our first container.
 
     Nginx is a lightweight web server. You can access it on port 8080 on your localhost.
 
-3. Access the nginx server on http://localhost:8080. If you are using play-with-docker, look for the `8080` link near the top of the page.
+4. Access the nginx server on http://localhost:<your unique port#>. If you are using play-with-docker, look for the `8100` link near the top of the page.
 
     ![](images/lab1_step2_nginx.png)
 
-4.  Run a mongo DB server
+5. Set unique port# and container name used by mongo DB server
+
+    * when you are running the lab in a wetty web terminal, you have to set a unique port# and container name based on your assigned wetty terminal username. For example, if your username is `user03`, you should use port# `8203`, and the container name as `mongo-03`. 
+
+        ```
+        export MONGOPORT=[your unique port#]
+        export MONGONAME=[your unique name]
+        ```
+
+    * when you are running the lab on your local machine or via http://play-with-docker.com,
+
+      ```
+      export MONGOPORT=8200
+      export MONGONAME=mongo
+      ```
+
+6.  Run a mongo DB server
 
     Now, run a mongoDB server. We will use the [official mongoDB image](https://store.docker.com/images/mongo) from the Docker Store. Instead of using the `latest` tag (which is the default if no tag is specified), we will use a specific version of the mongo image: 3.4.
 
     ```sh
-    $ docker container run --detach --publish 8081:27017 --name mongo mongo:3.4
+    $ docker container run --detach --publish $MONGOPORT:27017 --name $MONGONAME mongo:3.4
 
     Unable to find image 'mongo:3.4' locally
     3.4: Pulling from library/mongo
@@ -233,11 +265,11 @@ We are going to use the Docker CLI to run our first container.
 
     Again, since this is the first time we are running a mongo container, we will pull down the mongo image from the Docker Store. We are using the `--publish` flag to expose the 27017 mongo port on our host. We have to use a port other than 8080 for the host mapping, since that port is already exposed on our host. Again refer to the [official docs](https://store.docker.com/images/mongo) on the Docker Store to get more details about using the mongo image.
 
-5. Access http://localhost:8081 to see some output from mongo. If you are using play-with-docker, look for the `8080` link near the top of the page.
+7. Access http://localhost:<your unique port#> to see some output from mongo. If you are using play-with-docker, look for the `8200` link near the top of the page.
 
     ![](images/lab1_step2_mongo.png)
 
-6. Check your running containers with `docker container ls`
+8. Check your running containers with `docker container ls`
 
     ```sh
     $ docker container ls
@@ -250,7 +282,7 @@ We are going to use the Docker CLI to run our first container.
 
     You should see that you have an Nginx web server container, and a MongoDB container running on your host. Note that we have not configured these containers to talk to each other.
 
-    You can see the "nginx" and "mongo" names that we gave to our containers, and the random name (in my case "priceless_kepler") that was generated for the ubuntu container. You can also see that the port mappings that we specified with the `--publish` flag. For more details information on these running containers you can use the `docker container inspect [container id` command.
+    You can see the "nginx-##" and "mongo-##" names that we gave to our containers, and the random name (in my case "priceless_kepler") that was generated for the ubuntu container. You can also see that the port mappings that we specified with the `--publish` flag. For more details information on these running containers you can use the `docker container inspect [container id` command.
 
     One thing you might notice is that the mongo container is running the `docker-entrypoint` command. This is the name of the executable that is run when the container is started. The mongo image requires some prior configuration before kicking off the DB process. You can see exactly what the script does by looking at it on [github](https://github.com/docker-library/mongo/blob/master/3.0/docker-entrypoint.sh). Typically, you can find the link to the github source from the image description page on the Docker Store website.
 
