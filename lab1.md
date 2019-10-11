@@ -81,7 +81,7 @@ We are going to use the Docker CLI to run our first container.
 
     a) Open a new terminal. 
 
-    If you are using a wetty web ternimal, you can start a new terminal by running the same wetty URL in a new browser ot new tab.
+    If you are using a web ternimal, you can start a new terminal by running the same URL in a new browser ot new tab.
 
     If you are using play-with-docker.com, click "Add New Instance" on the lefthand side to open a new terminal connected to node1, then ssh from node2 into node1 using the IP that is listed by 'node1  '. For example:
 
@@ -115,6 +115,8 @@ We are going to use the Docker CLI to run our first container.
     root@b3ad2a23fab3:/# 
     ```
 
+    > **Note**: You must replace `b3ad2a23fab3` with the output `CONTAINER ID` of the previous command `docker container ls`.
+
     The command uses the container id to run `bash` inside that container. Since we are using `bash` and want to interact with this container from our terminal, use `-it` flags to run using interactive mode while allocating a psuedo-terminal.
 
     And Voila! We just used the `docker container exec` command to "enter" our container's namespaces with our bash process. Using `docker container exec` with `bash` is a common pattern to inspect a docker container.
@@ -145,7 +147,7 @@ We are going to use the Docker CLI to run our first container.
     exit
 
     $ ps -ef
-    # Lots of processes!
+    # different processes!
     ```
 
     *Technical Deep Dive*
