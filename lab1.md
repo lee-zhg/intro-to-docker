@@ -110,12 +110,12 @@ We are going to use the Docker CLI to run our first container.
     c) Enter the conatiner with command
 
     ```sh
-    $ docker container exec -it b3ad2a23fab3 bash
+    $ docker container exec -it [CONTAINER ID] bash
 
     root@b3ad2a23fab3:/# 
     ```
 
-    > **Note**: You must replace `b3ad2a23fab3` with the output `CONTAINER ID` of the previous command `docker container ls`.
+    > **Note**: You must replace `[CONTAINER ID]` with the output of the previous command `docker container ls`.
 
     The command uses the container id to run `bash` inside that container. Since we are using `bash` and want to interact with this container from our terminal, use `-it` flags to run using interactive mode while allocating a psuedo-terminal.
 
